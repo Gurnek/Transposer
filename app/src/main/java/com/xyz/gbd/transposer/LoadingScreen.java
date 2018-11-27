@@ -2,6 +2,7 @@ package com.xyz.gbd.transposer;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Window;
 
 public class LoadingScreen extends AppCompatActivity {
 
