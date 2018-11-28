@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Transposer</string>
+    <string name="staffDesc">Image of a staff.</string>
 </resources>
