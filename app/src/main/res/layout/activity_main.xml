@@ -24,4 +24,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/staff" />
 
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="27dp"
+        android:layout_height="27dp"
+        app:srcCompat="@drawable/wholeNote"
+        tools:layout_editor_absoluteX="131dp"
+        tools:layout_editor_absoluteY="332dp" />
+
 </android.support.constraint.ConstraintLayout>
