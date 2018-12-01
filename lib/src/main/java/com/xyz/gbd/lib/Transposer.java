@@ -47,4 +47,42 @@ public class Transposer {
         }
         return noteTemp;
     }
+
+    public static String nameToOctave(String noteName) {
+        return noteName.substring(noteName.length() - 1);
+    }
+
+    public static int numToOctave(double noteValue) {
+        return (int) (1 + (noteValue - noteValue % 7) / 7);
+    }
+
+    public static double getAccValue(String noteName) {
+        if (noteName.contains("b")) {
+            return -0.4;
+        } else if (noteName.contains("#")) {
+            return 0.4;
+        } else {
+            return 0.0;
+        }
+    }
+
+    public static String getAccLetter(double noteValue) {
+        double tempValue = noteValue;
+        double remainder = Math.floor(((noteValue % 1) * 10));
+        if (remainder == 4) {
+            return "#";
+        } else if (remainder == 6) {
+            return "b";
+        } else {
+            return "";
+        }
+    }
+
+    public static int getPitchFromName(String noteName) {
+        return 0;
+    }
+    public static double evaluateNote(String noteName) {
+        double noteValue = 0.0;
+        return 0.0;
+    }
 }
