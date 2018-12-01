@@ -15,4 +15,5 @@
         <item>Bb</item>
         <item>B</item>
     </string-array>
+    <string name="Transpose">Transpose</string>
 </resources>
