@@ -15,4 +15,36 @@ public class Transposer {
         }
         return steps;
     }
+    public double transposeNote(double noteValue, int steps) {
+        double noteTemp = noteValue;
+        boolean isInteger = false;
+        if (noteTemp % 1 == 0.0) {
+            isInteger = true;
+        }
+        for (int i = 0; i < Math.abs(steps); i++) {
+            if (steps > 0) {
+                if (noteTemp % 7 == 2 || noteTemp % 7 == 6) {
+                    noteTemp += 1;
+                }
+                else if (isInteger) {
+                    noteTemp += 0.4;
+                    isInteger = false;
+                } else {
+                    noteTemp += 0.6;
+                    isInteger = true;
+                }
+            } else {
+                if (noteTemp % 7 == 3 || noteTemp % 7 == 0) {
+                    noteTemp -= 1;
+                } else if (isInteger) {
+                    noteTemp -= 0.4;
+                    isInteger = false;
+                } else {
+                    noteTemp -= 0.6;
+                    isInteger = true;
+                }
+            }
+        }
+        return noteTemp;
+    }
 }
