@@ -2,4 +2,17 @@
     <string name="app_name">Transposer</string>
     <string name="staffDesc">Image of a staff.</string>
     <string name="wholeDesc">Image of a whole note.</string>
+    <string-array name="key_array">
+        <item>C</item>
+        <item>Db</item>
+        <item>D</item>
+        <item>Eb</item>
+        <item>E</item>
+        <item>F</item>
+        <item>G</item>
+        <item>Ab</item>
+        <item>A</item>
+        <item>Bb</item>
+        <item>B</item>
+    </string-array>
 </resources>
