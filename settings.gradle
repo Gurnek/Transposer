@@ -1,1 +1,1 @@
-include ':app', ':lib'
+include ':app', ':lib', ':jMusic1.6.5'

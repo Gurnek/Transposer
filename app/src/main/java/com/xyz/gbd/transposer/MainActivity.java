@@ -2,6 +2,7 @@ package com.xyz.gbd.transposer;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -19,5 +20,8 @@ public class MainActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         begin.setAdapter(adapter);
         end.setAdapter(adapter);
+    }
+
+    public void PlaySound(View view) {
     }
 }
