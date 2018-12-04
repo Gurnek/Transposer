@@ -28,16 +28,15 @@
     <ImageView
         android:id="@+id/wholenote"
         android:layout_width="27dp"
-        android:layout_height="25dp"
-        android:layout_marginTop="14dp"
+        android:layout_height="17dp"
         android:layout_marginBottom="16dp"
         android:contentDescription="@string/wholeDesc"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.607"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.501"
+        app:layout_constraintBottom_toBottomOf="@+id/space"
+        app:layout_constraintEnd_toEndOf="@+id/space"
+        app:layout_constraintHorizontal_bias="0.613"
+        app:layout_constraintStart_toStartOf="@+id/space"
+        app:layout_constraintTop_toTopOf="@+id/space"
+        app:layout_constraintVertical_bias="0.394"
         app:srcCompat="@drawable/wholenote" />
 
     <Spinner
@@ -76,8 +75,8 @@
 
     <Button
         android:id="@+id/transposeButton"
-        android:layout_width="198dp"
-        android:layout_height="83dp"
+        android:layout_width="171dp"
+        android:layout_height="62dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
@@ -90,7 +89,62 @@
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/staff" />
+        app:layout_constraintTop_toBottomOf="@+id/staff"
+        app:layout_constraintVertical_bias="0.821" />
+
+    <ImageView
+        android:id="@+id/ledgerline"
+        android:layout_width="21dp"
+        android:layout_height="52dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/space"
+        app:layout_constraintEnd_toEndOf="@+id/space"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/space"
+        app:layout_constraintTop_toTopOf="@+id/space"
+        app:layout_constraintVertical_bias="0.923"
+        app:srcCompat="@drawable/ledgerline" />
+
+    <android.support.constraint.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <android.support.constraint.Barrier
+        android:id="@+id/barrier2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top" />
+
+    <android.support.constraint.Barrier
+        android:id="@+id/barrier3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="left" />
+
+    <Space
+        android:id="@+id/space"
+        android:layout_width="32dp"
+        android:layout_height="348dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/transposeButton"
+        app:layout_constraintEnd_toEndOf="@+id/staff"
+        app:layout_constraintHorizontal_bias="0.68"
+        app:layout_constraintStart_toStartOf="@+id/staff"
+        app:layout_constraintTop_toBottomOf="@+id/transpose_key"
+        app:layout_constraintVertical_bias="0.68" />
 
 </android.support.constraint.ConstraintLayout>
