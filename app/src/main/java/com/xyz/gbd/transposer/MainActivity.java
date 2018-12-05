@@ -2,6 +2,7 @@ package com.xyz.gbd.transposer;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -48,6 +49,9 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 }
                 break;
             case MotionEvent.ACTION_UP:
+                Log.e("noteCheck", "Raw y: " + event.getRawY());
+                Log.e("posCheck", "Modified height: " + (wholeNote.getHeight() * 3 / 2));
+                Log.e("endCheck", "Combined ending pos = : " + (event.getRawY() - wholeNote.getHeight() * 3 / 2));
                 moving = false;
                 break;
         }
