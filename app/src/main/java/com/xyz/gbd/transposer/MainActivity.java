@@ -1,22 +1,17 @@
 package com.xyz.gbd.transposer;
-import java.io.File;
-import java.lang.Object;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Parcelable.Creator;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
-import static java.lang.System.out;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
+    ImageView wholeNote;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,11 +25,33 @@ public class MainActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         begin.setAdapter(adapter);
         end.setAdapter(adapter);
-        /**
-        File noteImage = new File("/Users/danielgleason/StudioProjects/Transposer/app/src/main/res/drawable/wholenote.png");
-        Bitmap noteBitmap = BitmapFactory.decodeFile(noteImage.getAbsolutePath());
-        ImageView noteImageView = findViewById(R.id.wholenote);
-        noteImageView.setImageBitmap(noteBitmap);
-         */
+
+        wholeNote = findViewById(R.id.wholenote);
+        wholeNote.setOnTouchListener(this);
+    }
+
+    private float snapY(float rawY) {
+        return 0;
+    }
+
+    private boolean moving = false;
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                moving = true;
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if (moving) {
+                    float y = event.getRawY() - wholeNote.getHeight() * 3 / 2;
+                    wholeNote.setY(y);
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                moving = false;
+                break;
+        }
+        return true;
     }
 }
+
