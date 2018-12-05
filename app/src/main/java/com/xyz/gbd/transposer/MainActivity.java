@@ -35,6 +35,29 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         return 0;
     }
 
+    private void setKey(String currentKey) {
+        String key = currentKey;
+        switch (key) {
+            case "C" :
+
+        }
+
+    }
+
+    private void hideAllKeys() {
+        ImageView bflat = findViewById(R.id.bflat);
+        bflat.setVisibility(View.GONE);
+    }
+    private void changeFlats(int numFlats) {
+        String[] flats = new String[] {"b", "e", "a", "d", "g", "c", "f"};
+        for (int i = 0; i < numFlats; i++) {
+            String id = "@+id/" + flats[i] + "flat";
+            int currentFlat = getResources().getIdentifier(id, "layout", null);
+            ImageView thisFlat = findViewById(currentFlat);
+            thisFlat.setVisibility(View.GONE);
+        }
+    }
+
     private boolean moving = false;
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -44,7 +67,23 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (moving) {
+                    //First: store note's initial position as a float
+                    //float notePos = wholeNote.getY();
+                    //Second: constantly update a float with the cursor's position
                     float y = event.getRawY() - wholeNote.getHeight() * 3 / 2;
+                    //Third: Constantly check if the cursor's pos is 20 or more different than note
+                    /**
+                    if (Math.abs(notePos - y) >= 20) {
+                        //Fourth: if it is, move the note and set the new position as step 1
+                        if (y > notePos) {
+                            wholeNote.setY(notePos + 20);
+                            notePos += 20;
+                        } else {
+                            wholeNote.setY(notePos - 20);
+                            notePos -= 20;
+                        }
+                    }
+                     */
                     wholeNote.setY(y);
                 }
                 break;
