@@ -1,5 +1,6 @@
 package com.xyz.gbd.transposer;
 
+import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
+
+import java.lang.reflect.Field;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
@@ -35,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 setKey(begin.getSelectedItem().toString());
-                Log.e("Post-run message: ", "This shit ran, yo!");
             }
 
             @Override
@@ -116,17 +118,32 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
     }
 
+    /**
+     * The following function was taken from user Macarse on stackoverflow
+     *
+     */
+    public static int getResId(String resName, Class<?> c) {
+
+        try {
+            Field idField = c.getDeclaredField(resName);
+            return idField.getInt(idField);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
     private void changeFlats(int numFlats) {
         String[] flats = new String[]{"b", "e", "a", "d", "g", "c", "f"};
         for (int i = 0; i < numFlats; i++) {
-            String id = "@+id/" + flats[i] + "flat";
-            int currentFlat = getResources().getIdentifier(id, "layout", getPackageName());
+            String id = flats[i] + "flat";
+            int currentFlat = getResources().getIdentifier(id, "id", "com.xyz.gbd.transposer");
             ImageView thisFlat = findViewById(currentFlat);
             thisFlat.setVisibility(View.VISIBLE);
         }
         for (int i = numFlats; i < 7; i++) {
-            String id = "@+id/" + flats[i] + "flat";
-            int currentFlat = getResources().getIdentifier(id, "layout", getPackageName());
+            String id = flats[i] + "flat";
+            int currentFlat = getResources().getIdentifier(id, "id", "com.xyz.gbd.transposer");
             ImageView thisFlat = findViewById(currentFlat);
             thisFlat.setVisibility(View.GONE);
         }
@@ -135,14 +152,14 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private void changeSharps(int numSharps) {
         String[] sharps = new String[] {"f", "c", "g", "d", "e", "a", "b"};
         for (int i = 0; i < numSharps; i++) {
-            String id = "@+id/" + sharps[i] + "sharp";
-            int currentSharp = getResources().getIdentifier(id, "layout", null);
+            String id = sharps[i] + "sharp";
+            int currentSharp = getResources().getIdentifier(id, "id", "com.xyz.gbd.transposer");
             ImageView thisSharp = findViewById(currentSharp);
             thisSharp.setVisibility(View.VISIBLE);
         }
         for (int i = numSharps; i < 7; i++) {
-            String id = "@+id/" + sharps[i] + "sharp";
-            int currentSharp = getResources().getIdentifier(id, "layout", null);
+            String id = sharps[i] + "sharp";
+            int currentSharp = getResources().getIdentifier(id, "id", "com.xyz.gbd.transposer");
             ImageView thisSharp = findViewById(currentSharp);
             thisSharp.setVisibility(View.GONE);
         }
