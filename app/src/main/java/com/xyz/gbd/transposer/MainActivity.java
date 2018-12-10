@@ -17,14 +17,16 @@ import java.lang.reflect.Field;
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
     ImageView wholeNote;
     ImageView staff;
+    Spinner end;
+    Spinner begin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final Spinner begin = findViewById(R.id.original_key);
-        Spinner end = findViewById(R.id.transpose_key);
+        begin = findViewById(R.id.original_key);
+        end = findViewById(R.id.transpose_key);
 
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.key_array, android.R.layout.simple_spinner_item);
@@ -48,6 +50,10 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         });
 
         staff = findViewById(R.id.staff);
+    }
+    //???
+    public void onTransposeClicked(View view) {
+        setKey(end.getSelectedItem().toString());
     }
 
     private float snapY(float rawY) {
@@ -138,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     private void changeSharps(int numSharps) {
-        String[] sharps = new String[] {"f", "c", "g", "d", "e", "a", "b"};
+        String[] sharps = new String[] {"f", "c", "g", "d", "a", "e", "b"};
         for (int i = 0; i < numSharps; i++) {
             String id = sharps[i] + "sharp";
             int currentSharp = getResources().getIdentifier(id, "id", "com.xyz.gbd.transposer");
