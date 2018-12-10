@@ -4,16 +4,20 @@
     <string name="wholeDesc">Image of a whole note.</string>
     <string-array name="key_array">
         <item>C</item>
-        <item>Db</item>
-        <item>D</item>
-        <item>Eb</item>
-        <item>E</item>
-        <item>F</item>
         <item>G</item>
-        <item>Ab</item>
+        <item>D</item>
         <item>A</item>
-        <item>Bb</item>
+        <item>E</item>
         <item>B</item>
+        <item>F#</item>
+        <item>C#</item>
+        <item>F</item>
+        <item>Bb</item>
+        <item>Eb</item>
+        <item>Ab</item>
+        <item>Db</item>
+        <item>Gb</item>
+        <item>Cb</item>
     </string-array>
     <string name="Transpose">Transpose</string>
 </resources>
