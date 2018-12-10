@@ -343,13 +343,15 @@
         android:id="@+id/space"
         android:layout_width="40dp"
         android:layout_height="470dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@+id/transposeButton"
         app:layout_constraintEnd_toEndOf="@+id/staff"
-        app:layout_constraintHorizontal_bias="0.686"
+        app:layout_constraintHorizontal_bias="0.889"
         app:layout_constraintStart_toStartOf="@+id/staff"
         app:layout_constraintTop_toBottomOf="@+id/transpose_key"
-        app:layout_constraintVertical_bias="0.246" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/bflat"

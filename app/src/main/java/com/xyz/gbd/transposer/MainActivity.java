@@ -16,6 +16,7 @@ import java.lang.reflect.Field;
 
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
     ImageView wholeNote;
+    ImageView staff;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
             }
         });
+
+        staff = findViewById(R.id.staff);
     }
 
     private float snapY(float rawY) {
@@ -116,21 +119,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 break;
         }
 
-    }
-
-    /**
-     * The following function was taken from user Macarse on stackoverflow
-     *
-     */
-    public static int getResId(String resName, Class<?> c) {
-
-        try {
-            Field idField = c.getDeclaredField(resName);
-            return idField.getInt(idField);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return -1;
-        }
     }
 
     private void changeFlats(int numFlats) {
