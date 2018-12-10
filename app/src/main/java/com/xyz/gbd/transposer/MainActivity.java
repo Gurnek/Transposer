@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             }
         });
     }
-
+    //???
     public void onTransposeClicked(View view) {
         setKey(end.getSelectedItem().toString());
     }
