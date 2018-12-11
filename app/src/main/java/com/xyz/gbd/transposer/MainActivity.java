@@ -1,4 +1,7 @@
 package com.xyz.gbd.transposer;
+import jm.JMC;
+import jm.music.data.Note;
+import jm.util.Play;
 
 import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +19,6 @@ import java.lang.reflect.Field;
 
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
     ImageView wholeNote;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +49,13 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         });
     }
 
+    public static void playnotes(String[] noteSounds) {
+        Note note = new Note();
+        note.setPitch(JMC.PITCH);
+        note.setDynamic(JMC.FF);
+        note.setDuration(JMC.HALF_NOTE);
+        Play.midi(note);
+    }
     private float snapY(float rawY) {
         return 0;
     }
