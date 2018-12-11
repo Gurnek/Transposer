@@ -1,6 +1,5 @@
 package com.xyz.gbd.transposer;
 
-import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,9 +9,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
-
-import java.lang.reflect.Field;
-
 
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
     ImageView wholeNote;
@@ -56,8 +52,14 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         setKey(end.getSelectedItem().toString());
     }
 
-    private float snapY(float rawY) {
-        return 0;
+    private void snapY() {
+        float wholeNoteY = wholeNote.getY() - staff.getY();
+        //Find step size for current screen.
+        float step = findViewById(R.id.asharp).getY() - findViewById(R.id.bsharp).getY();
+        Log.e("FUCK OFF", Float.toString(step));
+        int line = Math.round(wholeNoteY / step);
+        Log.e("FUCK OFF", Integer.toString(line));
+        wholeNote.setY(line * step + staff.getY());
     }
 
     private void setKey(String currentKey) {
@@ -178,6 +180,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 Log.e("posCheck", "Modified height: " + (wholeNote.getHeight() * 3 / 2));
                 Log.e("endCheck", "Combined ending pos = : " + (event.getRawY() - wholeNote.getHeight() * 3 / 2));
                 moving = false;
+                snapY();
                 break;
         }
         return true;
