@@ -20,4 +20,6 @@
         <item>Cb</item>
     </string-array>
     <string name="Transpose">Transpose</string>
+    <string name="original">Original Key</string>
+    <string name="newKey">New Key</string>
 </resources>

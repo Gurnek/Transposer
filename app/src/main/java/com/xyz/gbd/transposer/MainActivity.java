@@ -51,70 +51,76 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         setKey(end.getSelectedItem().toString());
     }
 
-    private float snapY(float rawY) {
-        return 0;
+    private void snapY() {
+        float wholeNoteY = wholeNote.getY() - staff.getY();
+        //Find step size for current screen.
+        float step = findViewById(R.id.asharp).getY() - findViewById(R.id.bsharp).getY();
+        Log.e("FUCK OFF", Float.toString(step));
+        int line = Math.round(wholeNoteY / step);
+        Log.e("FUCK OFF", Integer.toString(line));
+        wholeNote.setY(line * step + staff.getY());
     }
 
     private void setKey(String currentKey) {
         String key = currentKey;
         switch (key) {
-            case "C":
+            case "C" :
                 changeFlats(0);
                 changeSharps(0);
                 break;
-            case "F":
+            case "F" :
                 changeFlats(1);
                 changeSharps(0);
                 break;
-            case "Bb":
+            case "Bb" :
                 changeFlats(2);
                 changeSharps(0);
                 break;
-            case "Eb":
+            case "Eb" :
                 changeFlats(3);
                 changeSharps(0);
                 break;
-            case "Ab":
+            case "Ab" :
                 changeFlats(4);
                 changeSharps(0);
                 break;
-            case "Db":
+            case "Db" :
                 changeFlats(5);
                 changeSharps(0);
                 break;
-            case "Gb":
+            case "Gb" :
                 changeFlats(6);
                 changeSharps(0);
                 break;
-            case "Cb":
+            case "Cb" :
                 changeFlats(7);
                 changeSharps(0);
                 break;
-            case "G":
+            case "G" :
                 changeFlats(0);
                 changeSharps(1);
                 break;
-            case "D":
+            case "D" :
                 changeFlats(0);
                 changeSharps(2);
                 break;
-            case "A":
+            case "A" :
                 changeFlats(0);
                 changeSharps(3);
                 break;
-            case "E":
+            case "E" :
                 changeFlats(0);
                 changeSharps(4);
                 break;
-            case "B":
+            case "B" :
                 changeFlats(0);
                 changeSharps(5);
                 break;
-            case "F#":
+            case "F#" :
                 changeFlats(0);
                 changeSharps(6);
                 break;
-            case "C#":
+            case "C#" :
                 changeFlats(0);
                 changeSharps(7);
                 break;
