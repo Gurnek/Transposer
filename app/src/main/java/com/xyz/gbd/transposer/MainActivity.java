@@ -10,12 +10,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.view.KeyEvent;
 
 import java.lang.reflect.Field;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
     ImageView wholeNote;
+    ImageView noteFlat;
+    ImageView noteSharp;
     Spinner end;
     Spinner begin;
 
@@ -35,6 +38,9 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
         wholeNote = findViewById(R.id.wholenote);
         wholeNote.setOnTouchListener(this);
+
+        noteFlat = findViewById(R.id.noteflat);
+        noteSharp = findViewById(R.id.notesharp);
 
         begin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -183,6 +189,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 if (moving) {
                     float y = event.getRawY() - wholeNote.getHeight() * 3 / 2;
                     wholeNote.setY(y);
+                    noteFlat.setY(y);
+                    noteSharp.setY(y);
                 }
                 break;
             case MotionEvent.ACTION_UP:
