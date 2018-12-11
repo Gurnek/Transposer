@@ -1,6 +1,4 @@
 package com.xyz.gbd.transposer;
-
-import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,9 +8,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.view.KeyEvent;
-
-import java.lang.reflect.Field;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
@@ -37,8 +32,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         end.setAdapter(adapter);
 
         wholeNote = findViewById(R.id.wholenote);
-        wholeNote.setOnTouchListener(this);
-
         noteFlat = findViewById(R.id.noteflat);
         noteSharp = findViewById(R.id.notesharp);
 
@@ -54,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             }
         });
     }
-    //???
     public void onTransposeClicked(View view) {
         setKey(end.getSelectedItem().toString());
     }
@@ -66,83 +58,68 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private void setKey(String currentKey) {
         String key = currentKey;
         switch (key) {
-            case "C" :
+            case "C":
                 changeFlats(0);
                 changeSharps(0);
                 break;
-            case "F" :
+            case "F":
                 changeFlats(1);
                 changeSharps(0);
                 break;
-            case "Bb" :
+            case "Bb":
                 changeFlats(2);
                 changeSharps(0);
                 break;
-            case "Eb" :
+            case "Eb":
                 changeFlats(3);
                 changeSharps(0);
                 break;
-            case "Ab" :
+            case "Ab":
                 changeFlats(4);
                 changeSharps(0);
                 break;
-            case "Db" :
+            case "Db":
                 changeFlats(5);
                 changeSharps(0);
                 break;
-            case "Gb" :
+            case "Gb":
                 changeFlats(6);
                 changeSharps(0);
                 break;
-            case "Cb" :
+            case "Cb":
                 changeFlats(7);
                 changeSharps(0);
                 break;
-            case "G" :
+            case "G":
                 changeFlats(0);
                 changeSharps(1);
                 break;
-            case "D" :
+            case "D":
                 changeFlats(0);
                 changeSharps(2);
                 break;
-            case "A" :
+            case "A":
                 changeFlats(0);
                 changeSharps(3);
                 break;
-            case "E" :
+            case "E":
                 changeFlats(0);
                 changeSharps(4);
                 break;
-            case "B" :
+            case "B":
                 changeFlats(0);
                 changeSharps(5);
                 break;
-            case "F#" :
+            case "F#":
                 changeFlats(0);
                 changeSharps(6);
                 break;
-            case "C#" :
+            case "C#":
                 changeFlats(0);
                 changeSharps(7);
                 break;
         }
 
-    }
-
-    /**
-     * The following function was taken from user Macarse on stackoverflow
-     *
-     */
-    public static int getResId(String resName, Class<?> c) {
-
-        try {
-            Field idField = c.getDeclaredField(resName);
-            return idField.getInt(idField);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return -1;
-        }
     }
 
     private void changeFlats(int numFlats) {
@@ -162,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     private void changeSharps(int numSharps) {
-        String[] sharps = new String[] {"f", "c", "g", "d", "a", "e", "b"};
+        String[] sharps = new String[]{"f", "c", "g", "d", "a", "e", "b"};
         for (int i = 0; i < numSharps; i++) {
             String id = sharps[i] + "sharp";
             int currentSharp = getResources().getIdentifier(id, "id", "com.xyz.gbd.transposer");
@@ -177,20 +154,35 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         }
     }
 
+    private void rotateAccidental() {
+        if (noteSharp.getVisibility() == View.INVISIBLE && noteFlat.getVisibility() == View.INVISIBLE) {
+            noteSharp.setVisibility(View.VISIBLE);
+        } else if (noteSharp.getVisibility() == View.VISIBLE && noteFlat.getVisibility() == View.INVISIBLE) {
+            noteSharp.setVisibility(View.INVISIBLE);
+            noteFlat.setVisibility(View.VISIBLE);
+        } else if (noteSharp.getVisibility() == View.INVISIBLE && noteFlat.getVisibility() == View.VISIBLE) {
+            noteSharp.setVisibility(View.INVISIBLE);
+            noteFlat.setVisibility(View.INVISIBLE);
+        } else {
+            Log.e("Accidental problem: ", "Accidental combo not expected!");
+        }
+    }
+
     private boolean moving = false;
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                //rotateAccidental();
                 moving = true;
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (moving) {
                     float y = event.getRawY() - wholeNote.getHeight() * 3 / 2;
                     wholeNote.setY(y);
-                    noteFlat.setY(y);
-                    noteSharp.setY(y);
+                    //noteFlat.setY(y);
+                    //noteSharp.setY(y);
                 }
                 break;
             case MotionEvent.ACTION_UP:
