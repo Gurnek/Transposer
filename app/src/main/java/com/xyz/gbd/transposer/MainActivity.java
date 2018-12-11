@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     ImageView wholeNote;
     ImageView noteFlat;
     ImageView noteSharp;
+    ImageView staff;
     Spinner end;
     Spinner begin;
 
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         wholeNote = findViewById(R.id.wholenote);
         noteFlat = findViewById(R.id.noteflat);
         noteSharp = findViewById(R.id.notesharp);
+        staff = findViewById(R.id.staff);
 
         begin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -62,8 +64,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     private void setKey(String currentKey) {
-        String key = currentKey;
-        switch (key) {
+        switch (currentKey) {
             case "C" :
                 changeFlats(0);
                 changeSharps(0);
