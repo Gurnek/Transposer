@@ -3,7 +3,6 @@ import jm.JMC;
 import jm.music.data.Note;
 import jm.util.Play;
 
-import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,10 +14,6 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import jm.JMC.*;
 
-import java.lang.reflect.Field;
-
-
-
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
     ImageView sans1;
     ImageView sans2;
@@ -29,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     Spinner end;
     Spinner begin;
     public float stepSize;
+    private int distFromCent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,12 +64,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         sans2.setAlpha(0.0f);
     }
 
-    public static void playnotes(String[] notweSounds) {
-        Note note = new Note();
-        note.setPitch(JMC.PITCH);
-        note.setDynamic(JMC.FF);
-        note.setDuration(JMC.HALF_NOTE);
-        Play.midi(note);
+    public void playNotes(View v) {
+        getNote();
     }
     public void onTransposeClicked(View view) {
         setKey(end.getSelectedItem().toString());
@@ -83,12 +75,27 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         stepSize = Math.abs(sans1.getY() - sans2.getY()) / 2;
         float centerStaffY = sans1.getY();
         float dist = wholeNote.getY() - centerStaffY;
-        float stepsAway = Math.round(dist / stepSize);
+        int stepsAway = Math.round(dist / stepSize);
+        Log.e("STEPSAWAY", Integer.toString(stepsAway));
+        if (stepsAway < -6) {
+            stepsAway = -6;
+        } else if (stepsAway > 4) {
+            stepsAway = 4;
+        }
+        distFromCent = (-1) * stepsAway;
         wholeNote.setY(centerStaffY + stepsAway * stepSize);
     }
 
     private String getNote() {
-        return "GO FUCK YOURSELF";
+        String[] notes = new String[]{"a", "b", "c", "d", "e", "f", "g"};
+        Log.e("THE FUCKING NOTE:", Integer.toString(distFromCent));
+        if (distFromCent < 0) {
+            Log.e("THE FUCKING NOTE", notes[distFromCent + 7]);
+            return notes[distFromCent + 7];
+        } else {
+            Log.e("THE FUCKING NOTE", notes[distFromCent]);
+            return notes[distFromCent];
+        }
     }
 
     private void setKey(String currentKey) {
@@ -221,9 +228,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                Log.e("noteCheck", "Raw y: " + event.getRawY());
-                Log.e("posCheck", "Modified height: " + (wholeNote.getHeight() * 3 / 2));
-                Log.e("endCheck", "Combined ending pos = : " + (event.getRawY() - wholeNote.getHeight() * 3 / 2));
                 snapY();
                 moving = false;
                 break;
