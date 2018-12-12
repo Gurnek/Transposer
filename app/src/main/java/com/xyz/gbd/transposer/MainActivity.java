@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         });
         setKey("C");
 
+        staff = findViewById(R.id.staff);
     }
 
     public static void playnotes(String[] noteSounds) {
@@ -84,7 +85,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         Log.e("FUCK OFF", Integer.toString(line));
         wholeNote.setY(line * step + staff.getY());
     }
-
 
     private void setKey(String currentKey) {
         switch (currentKey) {
@@ -204,17 +204,19 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     public boolean onTouch(View v, MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                //rotateAccidental();
                 moving = true;
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (moving) {
                     float y = event.getRawY() - wholeNote.getHeight() * 3 / 2;
                     wholeNote.setY(y);
+                    //noteFlat.setY(y);
+                    //noteSharp.setY(y);
                 }
                 break;
             case MotionEvent.ACTION_UP:
                 moving = false;
-                Log.e("Top: ", Integer.toString(noteFlat.getTop()));
                 break;
         }
         return true;
