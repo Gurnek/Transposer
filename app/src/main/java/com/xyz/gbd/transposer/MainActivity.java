@@ -2,8 +2,6 @@ package com.xyz.gbd.transposer;
 import jm.JMC;
 import jm.music.data.Note;
 import jm.util.Play;
-
-import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,10 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import jm.JMC.*;
-
-import java.lang.reflect.Field;
-
-
 
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
     ImageView wholeNote;
@@ -46,6 +40,14 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         noteSharp = findViewById(R.id.notesharp);
         staff = findViewById(R.id.staff);
 
+        wholeNote.setOnTouchListener(this);
+        wholeNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rotateAccidental();
+            }
+        });
+
         begin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -57,8 +59,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
             }
         });
+        setKey("C");
 
-        staff = findViewById(R.id.staff);
     }
 
     public static void playnotes(String[] noteSounds) {
@@ -68,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         note.setDuration(JMC.HALF_NOTE);
         Play.midi(note);
     }
+
     public void onTransposeClicked(View view) {
         setKey(end.getSelectedItem().toString());
     }
@@ -81,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         Log.e("FUCK OFF", Integer.toString(line));
         wholeNote.setY(line * step + staff.getY());
     }
+
 
     private void setKey(String currentKey) {
         switch (currentKey) {
@@ -200,22 +204,17 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     public boolean onTouch(View v, MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                //rotateAccidental();
                 moving = true;
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (moving) {
                     float y = event.getRawY() - wholeNote.getHeight() * 3 / 2;
                     wholeNote.setY(y);
-                    //noteFlat.setY(y);
-                    //noteSharp.setY(y);
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                Log.e("noteCheck", "Raw y: " + event.getRawY());
-                Log.e("posCheck", "Modified height: " + (wholeNote.getHeight() * 3 / 2));
-                Log.e("endCheck", "Combined ending pos = : " + (event.getRawY() - wholeNote.getHeight() * 3 / 2));
                 moving = false;
+                Log.e("Top: ", Integer.toString(noteFlat.getTop()));
                 break;
         }
         return true;

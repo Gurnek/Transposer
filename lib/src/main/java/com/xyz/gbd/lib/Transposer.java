@@ -15,7 +15,8 @@ public class Transposer {
         }
         return steps;
     }
-    public double transposeNote(double noteValue, int steps) {
+    public void transposeNote(int numSteps) {
+        /**
         double noteTemp = noteValue;
         boolean isInteger = false;
         if (noteTemp % 1 == 0.0) {
@@ -46,5 +47,6 @@ public class Transposer {
             }
         }
         return noteTemp;
+         */
     }
 }
