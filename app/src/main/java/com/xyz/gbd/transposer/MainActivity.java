@@ -1,11 +1,7 @@
 package com.xyz.gbd.transposer;
-import jm.JMC;
-import jm.music.data.Note;
-import jm.util.Play;
 
-import java.util.Calendar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,7 +9,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import jm.JMC.*;
+
+import java.util.Calendar;
+
+import jm.JMC;
+import jm.music.data.Note;
+import jm.util.Play;
 
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
     ImageView sans1;
@@ -26,8 +27,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     Spinner begin;
     public float stepSize;
     private long startTime = 0;
-    private int distFromCenter = 0;
     protected final int MAX_STEPS = 5;
+    private int distFromCent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,21 +87,35 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
     public void onTransposeClicked(View view) {
         setKey(end.getSelectedItem().toString());
-        int stepsToMove = Transposer.transposeNote(Transposer.getSteps(begin.getSelectedItem().toString(), end.getSelectedItem().toString()), distFromCenter);
+        int stepsToMove = Transposer.transposeNote(Transposer.getSteps(begin.getSelectedItem().toString(), end.getSelectedItem().toString()), distFromCent);
         setNoteComponentY(wholeNote.getY() + stepSize * stepsToMove);
     }
 
     private void snapY() {
         stepSize = Math.abs(sans1.getY() - sans2.getY()) / 2;
-        float centerStaffY = sans1.getY() +;
+        float centerStaffY = (sans1.getY() + sans2.getY()) / 2;
         float dist = wholeNote.getY() - centerStaffY;
         int stepsAway = Math.round(dist / stepSize);
-        distFromCenter = -1 * stepsAway;
+        Log.e("STEPSAWAY", Integer.toString(stepsAway));
+        if (stepsAway < -6) {
+            stepsAway = -6;
+        } else if (stepsAway > 4) {
+            stepsAway = 4;
+        }
+        distFromCent = (-1) * stepsAway;
         setNoteComponentY(centerStaffY + stepsAway * stepSize);
     }
 
     private String getNote() {
-        return "";
+        String[] notes = new String[]{"a", "b", "c", "d", "e", "f", "g"};
+        Log.e("THE FUCKING NOTE:", Integer.toString(distFromCent));
+        if (distFromCent < 0) {
+            Log.e("THE FUCKING NOTE", notes[distFromCent + 7]);
+            return notes[distFromCent + 7];
+        } else {
+            Log.e("THE FUCKING NOTE", notes[distFromCent]);
+            return notes[distFromCent];
+        }
     }
 
     private void setKey(String currentKey) {
@@ -242,7 +257,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                     rotateAccidental();
                 }
                 snapY();
-                Log.e("Distfromcenter: ", Integer.toString(distFromCenter));
+                Log.e("Distfromcenter: ", Integer.toString(distFromCent));
                 moving = false;
                 break;
         }

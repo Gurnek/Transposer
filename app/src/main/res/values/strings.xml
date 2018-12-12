@@ -2,6 +2,7 @@
     <string name="app_name">Transposer</string>
     <string name="staffDesc">Image of a staff.</string>
     <string name="wholeDesc">Image of a whole note.</string>
+    <string name="playButton">Play Sound</string>
     <string-array name="key_array">
         <item>C</item>
         <item>G</item>
