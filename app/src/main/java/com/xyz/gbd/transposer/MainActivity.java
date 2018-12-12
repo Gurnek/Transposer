@@ -1,20 +1,20 @@
 package com.xyz.gbd.transposer;
-import jm.JMC;
-import jm.music.data.Note;
-import jm.util.Play;
 
 import com.xyz.gbd.lib.SansMachine;
 
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import jm.JMC.*;
+import android.widget.TableLayout;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
     ImageView sans1;
@@ -64,11 +64,26 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         sans2 = findViewById(R.id.sans2);
         sans1.setAlpha(0.0f);
         sans2.setAlpha(0.0f);
+
+        Toast t = Toast.makeText(getApplicationContext(), "Tap on note to change accidental!", Toast.LENGTH_LONG);
+        t.show();
+    }
+
+    private void playSound(String sound) {
+        MediaPlayer mp;
+        mp = MediaPlayer.create(this, R.raw.undertale);
+        mp.start();
+        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                mp.release();
+            }
+        });
     }
 
     public void playNotes(View v) {
         String note = getNote();
-
+        playSound("megalovania");
     }
     public void onTransposeClicked(View view) {
         setKey(end.getSelectedItem().toString());
