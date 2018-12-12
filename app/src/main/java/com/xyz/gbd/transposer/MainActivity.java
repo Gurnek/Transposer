@@ -20,12 +20,15 @@ import java.lang.reflect.Field;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
+    ImageView sans1;
+    ImageView sans2;
     ImageView wholeNote;
     ImageView noteFlat;
     ImageView noteSharp;
     ImageView staff;
     Spinner end;
     Spinner begin;
+    public float stepSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         end.setAdapter(adapter);
 
         wholeNote = findViewById(R.id.wholenote);
+        wholeNote.setOnTouchListener(this);
         noteFlat = findViewById(R.id.noteflat);
         noteSharp = findViewById(R.id.notesharp);
         staff = findViewById(R.id.staff);
@@ -57,16 +61,18 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
             }
         });
-
         staff = findViewById(R.id.staff);
+        sans1 = findViewById(R.id.sans1);
+        sans2 = findViewById(R.id.sans2);
+        sans1.setAlpha(0.0f);
+        sans2.setAlpha(0.0f);
     }
 
-    public static void playnotes(String[] noteSounds) {
-        Note note = new Note(Note.C_SHARP);
-        note.setPitch(JMC.GS4);
+    public static void playnotes(String[] notweSounds) {
+        Note note = new Note();
+        note.setPitch(JMC.PITCH);
         note.setDynamic(JMC.FF);
         note.setDuration(JMC.HALF_NOTE);
-        note.setFrequency(15000);
         Play.midi(note);
     }
     public void onTransposeClicked(View view) {
@@ -74,13 +80,15 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     private void snapY() {
-        float wholeNoteY = wholeNote.getY() - staff.getY();
-        //Find step size for current screen.
-        float step = findViewById(R.id.asharp).getY() - findViewById(R.id.bsharp).getY();
-        Log.e("FUCK OFF", Float.toString(step));
-        int line = Math.round(wholeNoteY / step);
-        Log.e("FUCK OFF", Integer.toString(line));
-        wholeNote.setY(line * step + staff.getY());
+        stepSize = Math.abs(sans1.getY() - sans2.getY()) / 2;
+        float centerStaffY = sans1.getY();
+        float dist = wholeNote.getY() - centerStaffY;
+        float stepsAway = Math.round(dist / stepSize);
+        wholeNote.setY(centerStaffY + stepsAway * stepSize);
+    }
+
+    private String getNote() {
+        return "GO FUCK YOURSELF";
     }
 
     private void setKey(String currentKey) {
@@ -216,6 +224,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 Log.e("noteCheck", "Raw y: " + event.getRawY());
                 Log.e("posCheck", "Modified height: " + (wholeNote.getHeight() * 3 / 2));
                 Log.e("endCheck", "Combined ending pos = : " + (event.getRawY() - wholeNote.getHeight() * 3 / 2));
+                snapY();
                 moving = false;
                 break;
         }
