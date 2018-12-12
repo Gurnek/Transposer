@@ -1,4 +1,9 @@
 package com.xyz.gbd.transposer;
+import jm.JMC;
+import jm.music.data.Note;
+import jm.util.Play;
+
+import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +13,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import jm.JMC.*;
+
+import java.lang.reflect.Field;
+
 
 
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
@@ -48,6 +57,16 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
             }
         });
+
+        staff = findViewById(R.id.staff);
+    }
+
+    public static void playnotes(String[] noteSounds) {
+        Note note = new Note();
+        note.setPitch(JMC.PITCH);
+        note.setDynamic(JMC.FF);
+        note.setDuration(JMC.HALF_NOTE);
+        Play.midi(note);
     }
     public void onTransposeClicked(View view) {
         setKey(end.getSelectedItem().toString());
@@ -146,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     private void changeSharps(int numSharps) {
-        String[] sharps = new String[]{"f", "c", "g", "d", "a", "e", "b"};
+        String[] sharps = new String[] {"f", "c", "g", "d", "a", "e", "b"};
         for (int i = 0; i < numSharps; i++) {
             String id = sharps[i] + "sharp";
             int currentSharp = getResources().getIdentifier(id, "id", "com.xyz.gbd.transposer");
