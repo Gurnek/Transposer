@@ -14,10 +14,6 @@ import com.xyz.gbd.lib.Transposer;
 
 import java.util.Calendar;
 
-import jm.JMC;
-import jm.music.data.Note;
-import jm.util.Play;
-
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
     ImageView sans1;
     ImageView sans2;
@@ -29,9 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     Spinner begin;
     public float stepSize;
     private long startTime = 0;
-    protected final int MAX_STEPS = 5;
     private int distFromCent;
-    private float centerPos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         sans2.setAlpha(0.0f);
     }
 
+    /**
     public static void playnotes(String[] noteSounds) {
         Note note = new Note();
         note.setPitch(JMC.PITCH);
@@ -87,8 +82,10 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         note.setDuration(JMC.HALF_NOTE);
         Play.midi(note);
     }
+     */
 
     public void onTransposeClicked(View view) {
+        float centerPos;
         setKey(end.getSelectedItem().toString());
         centerPos = (sans1.getY() + sans2.getY()) / 2;
         int stepsToMove = Transposer.transposeNote(Transposer.getSteps(begin.getSelectedItem().toString(), end.getSelectedItem().toString()), distFromCent);
