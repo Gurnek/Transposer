@@ -1,5 +1,9 @@
 package com.xyz.gbd.transposer;
+import jm.JMC;
+import jm.music.data.Note;
+import jm.util.Play;
 
+import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,9 +13,16 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import jm.JMC.*;
+
+import java.lang.reflect.Field;
+
+
 
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
     ImageView wholeNote;
+    ImageView noteFlat;
+    ImageView noteSharp;
     ImageView staff;
     Spinner end;
     Spinner begin;
@@ -31,7 +42,9 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         end.setAdapter(adapter);
 
         wholeNote = findViewById(R.id.wholenote);
-        wholeNote.setOnTouchListener(this);
+        noteFlat = findViewById(R.id.noteflat);
+        noteSharp = findViewById(R.id.notesharp);
+        staff = findViewById(R.id.staff);
 
         begin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -47,7 +60,14 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
         staff = findViewById(R.id.staff);
     }
-    //???
+
+    public static void playnotes(String[] noteSounds) {
+        Note note = new Note();
+        note.setPitch(JMC.PITCH);
+        note.setDynamic(JMC.FF);
+        note.setDuration(JMC.HALF_NOTE);
+        Play.midi(note);
+    }
     public void onTransposeClicked(View view) {
         setKey(end.getSelectedItem().toString());
     }
@@ -81,8 +101,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         return returnY - offset;
     }
     private void setKey(String currentKey) {
-        String key = currentKey;
-        switch (key) {
+        switch (currentKey) {
             case "C" :
                 changeFlats(0);
                 changeSharps(0);
@@ -179,18 +198,35 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         }
     }
 
+    private void rotateAccidental() {
+        if (noteSharp.getVisibility() == View.INVISIBLE && noteFlat.getVisibility() == View.INVISIBLE) {
+            noteSharp.setVisibility(View.VISIBLE);
+        } else if (noteSharp.getVisibility() == View.VISIBLE && noteFlat.getVisibility() == View.INVISIBLE) {
+            noteSharp.setVisibility(View.INVISIBLE);
+            noteFlat.setVisibility(View.VISIBLE);
+        } else if (noteSharp.getVisibility() == View.INVISIBLE && noteFlat.getVisibility() == View.VISIBLE) {
+            noteSharp.setVisibility(View.INVISIBLE);
+            noteFlat.setVisibility(View.INVISIBLE);
+        } else {
+            Log.e("Accidental problem: ", "Accidental combo not expected!");
+        }
+    }
+
     private boolean moving = false;
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                //rotateAccidental();
                 moving = true;
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (moving) {
                     float y = event.getRawY() - wholeNote.getHeight() * 3 / 2;
                     wholeNote.setY(y);
+                    //noteFlat.setY(y);
+                    //noteSharp.setY(y);
                 }
                 break;
             case MotionEvent.ACTION_UP:
@@ -198,7 +234,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 Log.e("posCheck", "Modified height: " + (wholeNote.getHeight() * 3 / 2));
                 Log.e("endCheck", "Combined ending pos = : " + (event.getRawY() - wholeNote.getHeight() * 3 / 2));
                 moving = false;
-                snapY();
                 break;
         }
         return true;
