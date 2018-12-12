@@ -8,6 +8,8 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 public class LoadingScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,11 +20,11 @@ public class LoadingScreen extends AppCompatActivity {
         final Animation fadeIn = new AlphaAnimation(0.0f, 1.0f);
         fadeIn.setDuration(3000);
 
-        final Animation fadeOut = new AlphaAnimation(1.0f, 0.0f);
-        fadeOut.setDuration(3000);
-
         TextView logo = findViewById(R.id.logo);
         logo.startAnimation(fadeIn);
+
+        TextView instructions = findViewById(R.id.instructions);
+        instructions.startAnimation(fadeIn);
     }
 
     public void switchScreen(View view) {
