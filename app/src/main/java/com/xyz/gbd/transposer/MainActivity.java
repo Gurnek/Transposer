@@ -3,7 +3,7 @@ import jm.JMC;
 import jm.music.data.Note;
 import jm.util.Play;
 
-import android.content.res.Resources;
+import java.util.Calendar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,10 +15,6 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import jm.JMC.*;
 
-import java.lang.reflect.Field;
-
-
-
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
     ImageView sans1;
     ImageView sans2;
@@ -29,6 +25,9 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     Spinner end;
     Spinner begin;
     public float stepSize;
+    private long startTime = 0;
+    private int distFromCenter = 0;
+    protected final int MAX_STEPS = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +49,14 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         noteSharp = findViewById(R.id.notesharp);
         staff = findViewById(R.id.staff);
 
+        wholeNote.setOnTouchListener(this);
+        wholeNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rotateAccidental();
+            }
+        });
+
         begin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -61,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
             }
         });
+        setKey("C");
         staff = findViewById(R.id.staff);
         sans1 = findViewById(R.id.sans1);
         sans2 = findViewById(R.id.sans2);
@@ -68,27 +76,31 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         sans2.setAlpha(0.0f);
     }
 
-    public static void playnotes(String[] notweSounds) {
+    public static void playnotes(String[] noteSounds) {
         Note note = new Note();
         note.setPitch(JMC.PITCH);
         note.setDynamic(JMC.FF);
         note.setDuration(JMC.HALF_NOTE);
         Play.midi(note);
     }
+
     public void onTransposeClicked(View view) {
         setKey(end.getSelectedItem().toString());
+        int stepsToMove = Transposer.transposeNote(Transposer.getSteps(begin.getSelectedItem().toString(), end.getSelectedItem().toString()), distFromCenter);
+        setNoteComponentY(wholeNote.getY() + stepSize * stepsToMove);
     }
 
     private void snapY() {
         stepSize = Math.abs(sans1.getY() - sans2.getY()) / 2;
-        float centerStaffY = sans1.getY();
+        float centerStaffY = sans1.getY() +;
         float dist = wholeNote.getY() - centerStaffY;
-        float stepsAway = Math.round(dist / stepSize);
-        wholeNote.setY(centerStaffY + stepsAway * stepSize);
+        int stepsAway = Math.round(dist / stepSize);
+        distFromCenter = -1 * stepsAway;
+        setNoteComponentY(centerStaffY + stepsAway * stepSize);
     }
 
     private String getNote() {
-        return "GO FUCK YOURSELF";
+        return "";
     }
 
     private void setKey(String currentKey) {
@@ -203,28 +215,34 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         }
     }
 
+    private void setNoteComponentY(float y) {
+        wholeNote.setY(y);
+        noteSharp.setY(y);
+        noteFlat.setY(y);
+    }
+
     private boolean moving = false;
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        int maxTime = 200;
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                //rotateAccidental();
                 moving = true;
+                startTime = Calendar.getInstance().getTimeInMillis();
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (moving) {
                     float y = event.getRawY() - wholeNote.getHeight() * 3 / 2;
-                    wholeNote.setY(y);
-                    //noteFlat.setY(y);
-                    //noteSharp.setY(y);
+                    setNoteComponentY(y);
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                Log.e("noteCheck", "Raw y: " + event.getRawY());
-                Log.e("posCheck", "Modified height: " + (wholeNote.getHeight() * 3 / 2));
-                Log.e("endCheck", "Combined ending pos = : " + (event.getRawY() - wholeNote.getHeight() * 3 / 2));
+                if (Calendar.getInstance().getTimeInMillis() - startTime < maxTime) {
+                    rotateAccidental();
+                }
                 snapY();
+                Log.e("Distfromcenter: ", Integer.toString(distFromCenter));
                 moving = false;
                 break;
         }

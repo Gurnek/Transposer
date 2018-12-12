@@ -1,12 +1,16 @@
-package com.xyz.gbd.lib;
+package com.xyz.gbd.transposer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Transposer {
 
-    public int getSteps(String key1, String key2) {
-        ArrayList<String> possibleKeys = new ArrayList<> (Arrays.asList("C", "Db", "Dd", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"));
+    protected static final int MAX_STEPS = 5;
+
+    public static int getSteps(String key1, String key2) {
+        String modKey1 = key1.substring(0, 1);
+        String modKey2 = key2.substring(0, 1);
+        ArrayList<String> possibleKeys = new ArrayList<> (Arrays.asList("C", "D", "E", "F", "G", "A", "B"));
         int firstPos = possibleKeys.indexOf(key1);
         int secondPos = possibleKeys.indexOf(key2);
         int steps = (Math.abs(firstPos - secondPos));
@@ -15,7 +19,7 @@ public class Transposer {
         }
         return steps;
     }
-    public void transposeNote(int numSteps) {
+    public static int transposeNote(int numSteps, int currentDist) {
         /**
         double noteTemp = noteValue;
         boolean isInteger = false;
@@ -48,5 +52,12 @@ public class Transposer {
         }
         return noteTemp;
          */
+        int newDist = currentDist + (numSteps % 7);
+        if (newDist > 5) {
+            newDist -= 7;
+        } else if (newDist < -5) {
+            newDist += 7;
+        }
+        return newDist;
     }
 }
