@@ -3,6 +3,8 @@ import jm.JMC;
 import jm.music.data.Note;
 import jm.util.Play;
 
+import com.xyz.gbd.lib.SansMachine;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -65,7 +67,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     public void playNotes(View v) {
-        getNote();
+        String note = getNote();
+
     }
     public void onTransposeClicked(View view) {
         setKey(end.getSelectedItem().toString());
