@@ -1,7 +1,9 @@
 package com.xyz.gbd.transposer;
 
-import android.os.Bundle;
+import com.xyz.gbd.lib.SansMachine;
+
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -101,6 +103,13 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         float centerStaffY = (sans1.getY() + sans2.getY()) / 2;
         float dist = wholeNote.getY() - centerStaffY;
         int stepsAway = Math.round(dist / stepSize);
+        Log.e("STEPSAWAY", Integer.toString(stepsAway));
+        if (stepsAway < -6) {
+            stepsAway = -6;
+        } else if (stepsAway > 4) {
+            stepsAway = 4;
+        }
+        distFromCent = (-1) * stepsAway;
         Log.e("STEPSAWAY", Integer.toString(stepsAway));
         if (stepsAway < -6) {
             stepsAway = -6;
