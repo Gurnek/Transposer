@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     Spinner begin;
     public float stepSize;
     private int distFromCent;
+    SansMachine sans = new SansMachine();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
     public void playNotes(View v) {
         String note = getNote();
+
         playSound("megalovania");
     }
     public void onTransposeClicked(View view) {
