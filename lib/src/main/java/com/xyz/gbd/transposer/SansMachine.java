@@ -1,4 +1,4 @@
-package com.xyz.gbd.lib;
+package com.xyz.gbd.transposer;
 
 public class SansMachine {
     private static int pos = -1;
