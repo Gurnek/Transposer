@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         String note = getNote();
         playSound(note);
         if (sans.input(note)) {
-            playSound("megalovania");
+            playSound("undertale");
         }
     }
 
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     private String getNote() {
-        String[] n = new String[]{"B", "C", "D", "E", "F", "G", "A"};
+        String[] n = new String[]{"b", "c", "d", "e", "f", "g", "a"};
         List<String> notes = Arrays.asList(n);
         String pitchLetter;
         String accidental = "";
