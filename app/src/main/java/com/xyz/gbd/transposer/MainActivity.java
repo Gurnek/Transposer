@@ -62,10 +62,11 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     public static void playnotes(String[] noteSounds) {
-        Note note = new Note();
-        note.setPitch(JMC.PITCH);
+        Note note = new Note(Note.C_SHARP);
+        note.setPitch(JMC.GS4);
         note.setDynamic(JMC.FF);
         note.setDuration(JMC.HALF_NOTE);
+        note.setFrequency(15000);
         Play.midi(note);
     }
     public void onTransposeClicked(View view) {
