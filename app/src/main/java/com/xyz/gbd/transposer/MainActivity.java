@@ -13,19 +13,27 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import jm.JMC.*;
 
 import java.lang.reflect.Field;
 
 
+
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
     ImageView wholeNote;
+    ImageView noteFlat;
+    ImageView noteSharp;
+    ImageView staff;
+    Spinner end;
+    Spinner begin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final Spinner begin = findViewById(R.id.original_key);
-        Spinner end = findViewById(R.id.transpose_key);
+        begin = findViewById(R.id.original_key);
+        end = findViewById(R.id.transpose_key);
 
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.key_array, android.R.layout.simple_spinner_item);
@@ -34,7 +42,9 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         end.setAdapter(adapter);
 
         wholeNote = findViewById(R.id.wholenote);
-        wholeNote.setOnTouchListener(this);
+        noteFlat = findViewById(R.id.noteflat);
+        noteSharp = findViewById(R.id.notesharp);
+        staff = findViewById(R.id.staff);
 
         begin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -47,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
             }
         });
+
+        staff = findViewById(R.id.staff);
     }
 
     public static void playnotes(String[] noteSounds) {
@@ -56,13 +68,22 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         note.setDuration(JMC.HALF_NOTE);
         Play.midi(note);
     }
-    private float snapY(float rawY) {
-        return 0;
+    public void onTransposeClicked(View view) {
+        setKey(end.getSelectedItem().toString());
+    }
+
+    private void snapY() {
+        float wholeNoteY = wholeNote.getY() - staff.getY();
+        //Find step size for current screen.
+        float step = findViewById(R.id.asharp).getY() - findViewById(R.id.bsharp).getY();
+        Log.e("FUCK OFF", Float.toString(step));
+        int line = Math.round(wholeNoteY / step);
+        Log.e("FUCK OFF", Integer.toString(line));
+        wholeNote.setY(line * step + staff.getY());
     }
 
     private void setKey(String currentKey) {
-        String key = currentKey;
-        switch (key) {
+        switch (currentKey) {
             case "C" :
                 changeFlats(0);
                 changeSharps(0);
@@ -127,21 +148,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
     }
 
-    /**
-     * The following function was taken from user Macarse on stackoverflow
-     *
-     */
-    public static int getResId(String resName, Class<?> c) {
-
-        try {
-            Field idField = c.getDeclaredField(resName);
-            return idField.getInt(idField);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return -1;
-        }
-    }
-
     private void changeFlats(int numFlats) {
         String[] flats = new String[]{"b", "e", "a", "d", "g", "c", "f"};
         for (int i = 0; i < numFlats; i++) {
@@ -159,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     private void changeSharps(int numSharps) {
-        String[] sharps = new String[] {"f", "c", "g", "d", "e", "a", "b"};
+        String[] sharps = new String[] {"f", "c", "g", "d", "a", "e", "b"};
         for (int i = 0; i < numSharps; i++) {
             String id = sharps[i] + "sharp";
             int currentSharp = getResources().getIdentifier(id, "id", "com.xyz.gbd.transposer");
@@ -174,18 +180,35 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         }
     }
 
+    private void rotateAccidental() {
+        if (noteSharp.getVisibility() == View.INVISIBLE && noteFlat.getVisibility() == View.INVISIBLE) {
+            noteSharp.setVisibility(View.VISIBLE);
+        } else if (noteSharp.getVisibility() == View.VISIBLE && noteFlat.getVisibility() == View.INVISIBLE) {
+            noteSharp.setVisibility(View.INVISIBLE);
+            noteFlat.setVisibility(View.VISIBLE);
+        } else if (noteSharp.getVisibility() == View.INVISIBLE && noteFlat.getVisibility() == View.VISIBLE) {
+            noteSharp.setVisibility(View.INVISIBLE);
+            noteFlat.setVisibility(View.INVISIBLE);
+        } else {
+            Log.e("Accidental problem: ", "Accidental combo not expected!");
+        }
+    }
+
     private boolean moving = false;
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                //rotateAccidental();
                 moving = true;
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (moving) {
                     float y = event.getRawY() - wholeNote.getHeight() * 3 / 2;
                     wholeNote.setY(y);
+                    //noteFlat.setY(y);
+                    //noteSharp.setY(y);
                 }
                 break;
             case MotionEvent.ACTION_UP:
