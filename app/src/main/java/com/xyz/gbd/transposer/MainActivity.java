@@ -13,8 +13,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TableLayout;
 import android.widget.Toast;
+
+import com.xyz.gbd.lib.Transposer;
+
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
     ImageView sans1;
@@ -26,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     Spinner end;
     Spinner begin;
     public float stepSize;
+    private long startTime = 0;
     private int distFromCent;
     SansMachine sans = new SansMachine();
 
@@ -49,6 +53,14 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         noteSharp = findViewById(R.id.notesharp);
         staff = findViewById(R.id.staff);
 
+        wholeNote.setOnTouchListener(this);
+        wholeNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rotateAccidental();
+            }
+        });
+
         begin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -60,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
             }
         });
+        setKey("C");
         staff = findViewById(R.id.staff);
         sans1 = findViewById(R.id.sans1);
         sans2 = findViewById(R.id.sans2);
@@ -87,13 +100,22 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
         playSound("megalovania");
     }
+
     public void onTransposeClicked(View view) {
+        float centerPos;
         setKey(end.getSelectedItem().toString());
+        centerPos = (sans1.getY() + sans2.getY()) / 2;
+        int stepsToMove = Transposer.transposeNote(Transposer.getSteps(begin.getSelectedItem().toString(), end.getSelectedItem().toString()), distFromCent);
+        Log.e("getY: ", Float.toString(wholeNote.getY()));
+        Log.e("PosMod: ", Float.toString(stepSize * stepsToMove));
+        Log.e("Combined: ", Float.toString(centerPos + stepSize * stepsToMove));
+        setNoteComponentY(centerPos + stepSize * stepsToMove * -1);
+        snapY();
     }
 
     private void snapY() {
         stepSize = Math.abs(sans1.getY() - sans2.getY()) / 2;
-        float centerStaffY = sans1.getY();
+        float centerStaffY = (sans1.getY() + sans2.getY()) / 2;
         float dist = wholeNote.getY() - centerStaffY;
         int stepsAway = Math.round(dist / stepSize);
         Log.e("STEPSAWAY", Integer.toString(stepsAway));
@@ -103,7 +125,21 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             stepsAway = 4;
         }
         distFromCent = (-1) * stepsAway;
-        wholeNote.setY(centerStaffY + stepsAway * stepSize);
+        Log.e("STEPSAWAY", Integer.toString(stepsAway));
+        if (stepsAway < -6) {
+            stepsAway = -6;
+        } else if (stepsAway > 4) {
+            stepsAway = 4;
+        }
+        distFromCent = (-1) * stepsAway;
+        Log.e("STEPSAWAY", Integer.toString(stepsAway));
+        if (stepsAway < -6) {
+            stepsAway = -6;
+        } else if (stepsAway > 4) {
+            stepsAway = 4;
+        }
+        distFromCent = (-1) * stepsAway;
+        setNoteComponentY(centerStaffY + stepsAway * stepSize);
     }
 
     private String getNote() {
@@ -230,25 +266,34 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         }
     }
 
+    private void setNoteComponentY(float y) {
+        wholeNote.setY(y);
+        noteSharp.setY(y);
+        noteFlat.setY(y);
+    }
+
     private boolean moving = false;
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        int maxTime = 200;
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                //rotateAccidental();
                 moving = true;
+                startTime = Calendar.getInstance().getTimeInMillis();
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (moving) {
                     float y = event.getRawY() - wholeNote.getHeight() * 3 / 2;
-                    wholeNote.setY(y);
-                    //noteFlat.setY(y);
-                    //noteSharp.setY(y);
+                    setNoteComponentY(y);
                 }
                 break;
             case MotionEvent.ACTION_UP:
+                if (Calendar.getInstance().getTimeInMillis() - startTime < maxTime) {
+                    rotateAccidental();
+                }
                 snapY();
+                Log.e("Distfromcenter: ", Integer.toString(distFromCent));
                 moving = false;
                 break;
         }
