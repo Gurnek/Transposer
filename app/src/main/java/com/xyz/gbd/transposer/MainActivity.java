@@ -20,12 +20,15 @@ import java.lang.reflect.Field;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
+    ImageView sans1;
+    ImageView sans2;
     ImageView wholeNote;
     ImageView noteFlat;
     ImageView noteSharp;
     ImageView staff;
     Spinner end;
     Spinner begin;
+    public float stepSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         end.setAdapter(adapter);
 
         wholeNote = findViewById(R.id.wholenote);
+        wholeNote.setOnTouchListener(this);
         noteFlat = findViewById(R.id.noteflat);
         noteSharp = findViewById(R.id.notesharp);
         staff = findViewById(R.id.staff);
@@ -57,11 +61,14 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
             }
         });
-
         staff = findViewById(R.id.staff);
+        sans1 = findViewById(R.id.sans1);
+        sans2 = findViewById(R.id.sans2);
+        sans1.setAlpha(0.0f);
+        sans2.setAlpha(0.0f);
     }
 
-    public static void playnotes(String[] noteSounds) {
+    public static void playnotes(String[] notweSounds) {
         Note note = new Note();
         note.setPitch(JMC.PITCH);
         note.setDynamic(JMC.FF);
@@ -73,33 +80,17 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     private void snapY() {
-        float Y = findNearestAccidental(wholeNote);
-        wholeNote.setY(Y);
+        stepSize = Math.abs(sans1.getY() - sans2.getY()) / 2;
+        float centerStaffY = sans1.getY();
+        float dist = wholeNote.getY() - centerStaffY;
+        float stepsAway = Math.round(dist / stepSize);
+        wholeNote.setY(centerStaffY + stepsAway * stepSize);
     }
 
-    private float findNearestAccidental(View img) {
-        float min = (float) Integer.MAX_VALUE;
-        float returnY = 0.0f;
-        ImageView accidental = findViewById(R.id.csharp);
-        String[] notes = new String[]{"a", "b", "c", "d", "e", "f", "g"};
-        String[] keys = new String[]{"flat", "sharp"};
-        for (String note : notes) {
-            for (String key : keys) {
-                ImageView thisAccidental = findViewById(getResources().getIdentifier(note + key, "id", "com.xyz.gbd.transposer"));
-                if (Math.abs(thisAccidental.getY() - img.getY()) < min) {
-                    min = Math.abs(thisAccidental.getY() - img.getY());
-                    returnY = thisAccidental.getY();
-                    accidental = thisAccidental;
-                }
-            }
-        }
-        Log.e("FUCKING HELL", Float.toString(min));
-        float offset = (accidental.getHeight() - wholeNote.getHeight()) / 2;
-       // if (getResources().getResourceEntryName(accidental.getId()).contains("flat")) {
-        //    offset *= 1.1;
-        //}
-        return returnY - offset;
+    private String getNote() {
+        return "GO FUCK YOURSELF";
     }
+
     private void setKey(String currentKey) {
         switch (currentKey) {
             case "C" :
@@ -233,6 +224,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 Log.e("noteCheck", "Raw y: " + event.getRawY());
                 Log.e("posCheck", "Modified height: " + (wholeNote.getHeight() * 3 / 2));
                 Log.e("endCheck", "Combined ending pos = : " + (event.getRawY() - wholeNote.getHeight() * 3 / 2));
+                snapY();
                 moving = false;
                 break;
         }

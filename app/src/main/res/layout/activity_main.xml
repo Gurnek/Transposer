@@ -283,13 +283,6 @@
         android:layout_height="wrap_content"
         app:barrierDirection="top" />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="20dp" />
-
     <android.support.constraint.Barrier
         android:id="@+id/barrier2"
         android:layout_width="wrap_content"
@@ -352,5 +345,29 @@
         app:layout_constraintTop_toTopOf="@+id/staff"
         app:layout_constraintVertical_bias="0.401"
         app:srcCompat="@drawable/wholenote" />
+
+    <ImageView
+        android:id="@+id/sans1"
+        android:layout_width="70dp"
+        android:layout_height="33dp"
+        app:layout_constraintBottom_toBottomOf="@+id/staff"
+        app:layout_constraintEnd_toEndOf="@+id/staff"
+        app:layout_constraintHorizontal_bias="0.97"
+        app:layout_constraintStart_toStartOf="@+id/staff"
+        app:layout_constraintTop_toTopOf="@+id/staff"
+        app:layout_constraintVertical_bias="0.76"
+        app:srcCompat="@drawable/sans" />
+
+    <ImageView
+        android:id="@+id/sans2"
+        android:layout_width="48dp"
+        android:layout_height="32dp"
+        app:layout_constraintBottom_toBottomOf="@+id/staff"
+        app:layout_constraintEnd_toEndOf="@+id/staff"
+        app:layout_constraintHorizontal_bias="0.94"
+        app:layout_constraintStart_toStartOf="@+id/staff"
+        app:layout_constraintTop_toTopOf="@+id/staff"
+        app:layout_constraintVertical_bias="0.58000004"
+        app:srcCompat="@drawable/sans" />
 
 </android.support.constraint.ConstraintLayout>
