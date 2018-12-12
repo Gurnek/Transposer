@@ -6,7 +6,8 @@ import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
+import java.util.ArrayList;
+import java.util.List;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import com.xyz.gbd.lib.Transposer;
 
+import java.util.Arrays;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
@@ -85,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
     private void playSound(String sound) {
         MediaPlayer mp;
-        mp = MediaPlayer.create(this, R.raw.undertale);
+        mp = MediaPlayer.create(this, getResources().getIdentifier(sound, "raw", "com.xyz.gbd.transposer"));
         mp.start();
         mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
@@ -97,8 +99,10 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
     public void playNotes(View v) {
         String note = getNote();
-
-        playSound("megalovania");
+        playSound(note);
+        if (sans.input(note)) {
+            playSound("megalovania");
+        }
     }
 
     public void onTransposeClicked(View view) {
@@ -118,40 +122,41 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         float centerStaffY = (sans1.getY() + sans2.getY()) / 2;
         float dist = wholeNote.getY() - centerStaffY;
         int stepsAway = Math.round(dist / stepSize);
-        Log.e("STEPSAWAY", Integer.toString(stepsAway));
-        if (stepsAway < -6) {
-            stepsAway = -6;
-        } else if (stepsAway > 4) {
-            stepsAway = 4;
-        }
         distFromCent = (-1) * stepsAway;
-        Log.e("STEPSAWAY", Integer.toString(stepsAway));
-        if (stepsAway < -6) {
-            stepsAway = -6;
-        } else if (stepsAway > 4) {
-            stepsAway = 4;
+        if (stepsAway < -5) {
+            stepsAway = -5;
+        } else if (stepsAway > 5) {
+            stepsAway = 5;
         }
-        distFromCent = (-1) * stepsAway;
-        Log.e("STEPSAWAY", Integer.toString(stepsAway));
-        if (stepsAway < -6) {
-            stepsAway = -6;
-        } else if (stepsAway > 4) {
-            stepsAway = 4;
-        }
-        distFromCent = (-1) * stepsAway;
         setNoteComponentY(centerStaffY + stepsAway * stepSize);
     }
 
     private String getNote() {
-        String[] notes = new String[]{"a", "b", "c", "d", "e", "f", "g"};
-        Log.e("THE FUCKING NOTE:", Integer.toString(distFromCent));
+        String[] n = new String[]{"B", "C", "D", "E", "F", "G", "A"};
+        List<String> notes = Arrays.asList(n);
+        String pitchLetter;
+        String accidental = "";
         if (distFromCent < 0) {
-            Log.e("THE FUCKING NOTE", notes[distFromCent + 7]);
-            return notes[distFromCent + 7];
+            pitchLetter = notes.get(distFromCent + 7);
         } else {
-            Log.e("THE FUCKING NOTE", notes[distFromCent]);
-            return notes[distFromCent];
+            Log.e("NOTE", notes.get(distFromCent));
+            pitchLetter = notes.get(distFromCent);
         }
+        if (noteSharp.getVisibility() == View.VISIBLE) {
+            pitchLetter = notes.get((notes.indexOf(pitchLetter) + 1) % 7);
+            accidental = "b";
+            if (pitchLetter.equals("C") || pitchLetter.equals("F")) {
+                accidental = "";
+            }
+        } else if (noteFlat.getVisibility() == View.VISIBLE) {
+            if (pitchLetter.equals("C") || pitchLetter.equals("F")) {
+                pitchLetter = notes.get(notes.indexOf(pitchLetter) - 1);
+            } else {
+                accidental = "b";
+            }
+        }
+        Log.e("NOTES", pitchLetter + accidental);
+        return pitchLetter + accidental;
     }
 
     private void setKey(String currentKey) {
