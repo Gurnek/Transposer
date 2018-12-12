@@ -53,15 +53,33 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     private void snapY() {
-        float wholeNoteY = wholeNote.getY() - staff.getY();
-        //Find step size for current screen.
-        float step = findViewById(R.id.asharp).getY() - findViewById(R.id.bsharp).getY();
-        Log.e("FUCK OFF", Float.toString(step));
-        int line = Math.round(wholeNoteY / step);
-        Log.e("FUCK OFF", Integer.toString(line));
-        wholeNote.setY(line * step + staff.getY());
+        float Y = findNearestAccidental(wholeNote);
+        wholeNote.setY(Y);
     }
 
+    private float findNearestAccidental(View img) {
+        float min = (float) Integer.MAX_VALUE;
+        float returnY = 0.0f;
+        ImageView accidental = findViewById(R.id.csharp);
+        String[] notes = new String[]{"a", "b", "c", "d", "e", "f", "g"};
+        String[] keys = new String[]{"flat", "sharp"};
+        for (String note : notes) {
+            for (String key : keys) {
+                ImageView thisAccidental = findViewById(getResources().getIdentifier(note + key, "id", "com.xyz.gbd.transposer"));
+                if (Math.abs(thisAccidental.getY() - img.getY()) < min) {
+                    min = Math.abs(thisAccidental.getY() - img.getY());
+                    returnY = thisAccidental.getY();
+                    accidental = thisAccidental;
+                }
+            }
+        }
+        Log.e("FUCKING HELL", Float.toString(min));
+        float offset = (accidental.getHeight() - wholeNote.getHeight()) / 2;
+       // if (getResources().getResourceEntryName(accidental.getId()).contains("flat")) {
+        //    offset *= 1.1;
+        //}
+        return returnY - offset;
+    }
     private void setKey(String currentKey) {
         String key = currentKey;
         switch (key) {
