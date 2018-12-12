@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private long startTime = 0;
     protected final int MAX_STEPS = 5;
     private int distFromCent;
+    private float centerPos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,8 +90,13 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
     public void onTransposeClicked(View view) {
         setKey(end.getSelectedItem().toString());
+        centerPos = (sans1.getY() + sans2.getY()) / 2;
         int stepsToMove = Transposer.transposeNote(Transposer.getSteps(begin.getSelectedItem().toString(), end.getSelectedItem().toString()), distFromCent);
-        setNoteComponentY(wholeNote.getY() + stepSize * stepsToMove);
+        Log.e("getY: ", Float.toString(wholeNote.getY()));
+        Log.e("PosMod: ", Float.toString(stepSize * stepsToMove));
+        Log.e("Combined: ", Float.toString(centerPos + stepSize * stepsToMove));
+        setNoteComponentY(centerPos + stepSize * stepsToMove * -1);
+        snapY();
     }
 
     private void snapY() {
