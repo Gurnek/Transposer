@@ -68,13 +68,26 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         sans2.setAlpha(0.0f);
     }
 
-    public static void playnotes(String[] notweSounds) {
+    public static void playnotes(String noteSounds) {
         Note note = new Note();
-        note.setPitch(JMC.PITCH);
+        int buttonPressed = R.id.transposeButton;
+        if (getNote == "a") {
+            note.setPitch(JMC.AS4);
+        } else if () {
+
+        } else if () {
+
+        } else if () {
+
+        }
         note.setDynamic(JMC.FF);
         note.setDuration(JMC.HALF_NOTE);
+        note.setFrequency(15000);
+        if (buttonPressed == )
         Play.midi(note);
     }
+
+
     public void onTransposeClicked(View view) {
         setKey(end.getSelectedItem().toString());
     }
@@ -88,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     private String getNote() {
-        return "GO FUCK YOURSELF";
+        return;
     }
 
     private void setKey(String currentKey) {
