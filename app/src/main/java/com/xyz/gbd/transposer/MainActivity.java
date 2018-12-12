@@ -1,6 +1,6 @@
 package com.xyz.gbd.transposer;
 
-import com.xyz.gbd.lib.SansMachine;
+import com.xyz.gbd.lib.Transposer;
 
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.xyz.gbd.lib.Transposer;
+import com.xyz.gbd.lib.SansMachine;
 
 import java.util.Calendar;
 
