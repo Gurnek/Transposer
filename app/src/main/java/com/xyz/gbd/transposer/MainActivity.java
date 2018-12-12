@@ -103,6 +103,13 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             stepsAway = 4;
         }
         distFromCent = (-1) * stepsAway;
+        Log.e("STEPSAWAY", Integer.toString(stepsAway));
+        if (stepsAway < -6) {
+            stepsAway = -6;
+        } else if (stepsAway > 4) {
+            stepsAway = 4;
+        }
+        distFromCent = (-1) * stepsAway;
         setNoteComponentY(centerStaffY + stepsAway * stepSize);
     }
 
